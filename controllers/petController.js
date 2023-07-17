@@ -59,9 +59,6 @@ const editPet = async (req, res) => {
         if (!pet) {
             return res.status(400).json({ message: 'Pet not found' });
         }
-        // if (pet.owner !== req.user.id) {
-        //     return res.status(401).json({ message: 'Unauthorized' });
-        // }
 
         if(name) {
             pet.name = name;
@@ -79,6 +76,33 @@ const editPet = async (req, res) => {
         pet.save();
         res.status(200).json({
             message: "Pet updated successfully",
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Something went wrong" });
+    }
+};
+
+const updateLocation = async (req, res) => {
+    try {
+        const { id, lastLocation, lastSeen } = req.body;
+        const pet = await Pet.findOne({ _id: id });
+        if (!pet) {
+            return res.status(400).json({ message: 'Pet not found' });
+        }
+
+        if(lastLocation) {
+            pet.lastLocation = lastLocation;
+        }
+        if(lastSeen) {
+            pet.lastSeen = lastSeen;
+        }
+
+        pet.save();
+        res.status(200).json({
+            message: "Pet updated successfully",
+            lastLocation: pet.lastLocation,
+            lastSeen: pet.lastSeen,
         });
     } catch (error) {
         console.log(error);
@@ -120,5 +144,6 @@ module.exports = {
     createPet,
     getAllMyPets,
     editPet,
+    updateLocation,
     getPetById,
 };

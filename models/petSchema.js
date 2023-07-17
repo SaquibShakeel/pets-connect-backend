@@ -15,7 +15,7 @@ const petSchema = new mongoose.Schema({
         required: false
     },
     lastLocation: {
-        type: String,
+        type: Object,
         required: false
     },
     lastSeen: {
